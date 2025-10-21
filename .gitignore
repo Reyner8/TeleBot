@@ -1,0 +1,2 @@
+# ignore notes.db when pushing to remote repository
+notes.db
