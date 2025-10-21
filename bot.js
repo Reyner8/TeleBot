@@ -361,7 +361,7 @@ bot.onText(/\/list/, (msg) => {
   bot.sendMessage(chatId, s, { parse_mode: "Markdown" });
 });
 
-bot.onText(/\/\done\s+(\d+)/, (msg, match) => {
+bot.onText(/\/done\s+(\d+)/, (msg, match) => {
   const chatId = msg.chat.id;
   const id = Number(match[1]);
   const note = getNoteByIdStmt.get(id, chatId);
@@ -379,18 +379,26 @@ bot.onText(/\/laporan|\/reports/, (msg) => {
   const chatId = msg.chat.id;
   const rows = getReportsByChatStmt.all(chatId);
   if (!rows.length) return bot.sendMessage(chatId, "Belum ada laporan.");
+
   let s = "🗂️ *Laporan:*\n";
+  s +=
+    "ID | Judul | Laporan | Terima | Selesai\n" +
+    "---|-------|---------|--------|--------\n";
+
   rows.forEach((r) => {
-    s += `\n#${r.id} • ${r.title}\n   🕒 Laporan: ${
+    s += `${r.id} | ${r.title} | ${
       r.report_time
-        ? moment(r.report_time).tz(TIMEZONE).format("DD MMM YYYY HH:mm")
+        ? moment(r.report_time).tz(TIMEZONE).format("DD/MM HH:mm")
         : "-"
-    }\n   ✅ Selesai: ${
-      r.done_time
-        ? moment(r.done_time).tz(TIMEZONE).format("DD MMM YYYY HH:mm")
+    } | ${
+      r.receive_time
+        ? moment(r.receive_time).tz(TIMEZONE).format("DD/MM HH:mm")
         : "-"
+    } | ${
+      r.done_time ? moment(r.done_time).tz(TIMEZONE).format("DD/MM HH:mm") : "-"
     }\n`;
   });
+
   bot.sendMessage(chatId, s, { parse_mode: "Markdown" });
 });
 
@@ -893,19 +901,28 @@ Simpan laporan ini?
   if (lower === "📥 lihat laporan".toLowerCase()) {
     const rows = getReportsByChatStmt.all(chatId);
     if (!rows.length) return bot.sendMessage(chatId, "Belum ada laporan.");
+
     let s = "🗂️ *Laporan:*\n";
-    rows.forEach(
-      (r) =>
-        (s += `\n#${r.id} • ${r.title}\n   🕒 Laporan: ${
-          r.report_time
-            ? moment(r.report_time).tz(TIMEZONE).format("DD MMM YYYY HH:mm")
-            : "-"
-        }\n   ✅ Selesai: ${
-          r.done_time
-            ? moment(r.done_time).tz(TIMEZONE).format("DD MMM YYYY HH:mm")
-            : "-"
-        }\n`)
-    );
+    s +=
+      "ID | Judul | Laporan | Terima | Selesai\n" +
+      "---|-------|---------|--------|--------\n";
+
+    rows.forEach((r) => {
+      s += `${r.id} | ${r.title} | ${
+        r.report_time
+          ? moment(r.report_time).tz(TIMEZONE).format("DD/MM HH:mm")
+          : "-"
+      } | ${
+        r.receive_time
+          ? moment(r.receive_time).tz(TIMEZONE).format("DD/MM HH:mm")
+          : "-"
+      } | ${
+        r.done_time
+          ? moment(r.done_time).tz(TIMEZONE).format("DD/MM HH:mm")
+          : "-"
+      }\n`;
+    });
+
     return bot.sendMessage(chatId, s, { parse_mode: "Markdown" });
   }
 
