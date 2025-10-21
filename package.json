@@ -1,0 +1,24 @@
+{
+  "name": "telebot",
+  "type": "module",
+  "version": "1.0.0",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "better-sqlite3": "^12.4.1",
+    "chrono-node": "^2.9.0",
+    "dotenv": "^17.2.3",
+    "moment": "^2.30.1",
+    "moment-timezone": "^0.6.0",
+    "node-schedule": "^2.1.1",
+    "node-telegram-bot-api": "^0.66.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
+  }
+}
