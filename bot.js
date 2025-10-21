@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS notes (
   text TEXT NOT NULL,
   reminder_at TEXT,
   reminded INTEGER DEFAULT 0,
-  status enum('pending', 'done') DEFAULT 'pending',
+  status TEXT DEFAULT 'pending',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
