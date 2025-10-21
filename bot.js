@@ -910,22 +910,21 @@ Simpan laporan ini?
     if (!rows.length) return bot.sendMessage(chatId, "Belum ada laporan.");
 
     let s = "🗂️ *Laporan:*\n";
-    s +=
-      "ID | Judul | Laporan | Terima | Selesai\n" +
-      "---|-------|---------|--------|--------\n";
-
     rows.forEach((r) => {
-      s += `${r.id} | ${r.title} | ${
+      s += `#${r.id} - ${r.title}\n`;
+      s += `🕒 ${
         r.report_time
-          ? moment(r.report_time).tz(TIMEZONE).format("DD/MM HH:mm")
+          ? moment(r.report_time).tz(TIMEZONE).format("YYYY-MM-DD HH:mm")
           : "-"
-      } | ${
+      }, `;
+      s += `📥 ${
         r.receive_time
-          ? moment(r.receive_time).tz(TIMEZONE).format("DD/MM HH:mm")
+          ? moment(r.receive_time).tz(TIMEZONE).format("YYYY-MM-DD HH:mm")
           : "-"
-      } | ${
+      }, `;
+      s += `✅ ${
         r.done_time
-          ? moment(r.done_time).tz(TIMEZONE).format("DD/MM HH:mm")
+          ? moment(r.done_time).tz(TIMEZONE).format("YYYY-MM-DD HH:mm")
           : "-"
       }\n`;
     });
