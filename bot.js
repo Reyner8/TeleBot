@@ -380,7 +380,7 @@ bot.onText(/\/laporan|\/reports/, (msg) => {
   const rows = getReportsByChatStmt.all(chatId);
   if (!rows.length) return bot.sendMessage(chatId, "Belum ada laporan.");
 
-  let s = "🗂️ *Laporan:*
+  let s = "🗂️ *Laporan:*";
 });
   rows.forEach((r) => {
     s += `#${r.id} - ${r.title}\n`;
