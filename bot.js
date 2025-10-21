@@ -380,27 +380,15 @@ bot.onText(/\/laporan|\/reports/, (msg) => {
   const rows = getReportsByChatStmt.all(chatId);
   if (!rows.length) return bot.sendMessage(chatId, "Belum ada laporan.");
 
-  let s = "🗂️ *Laporan:*\n";
-  s +=
-    "ID | Judul | Laporan | Terima | Selesai\n" +
-    "---|-------|---------|--------|--------\n";
-
-  rows.forEach((r) => {
-    s += `${r.id} | ${r.title} | ${
-      r.report_time
-        ? moment(r.report_time).tz(TIMEZONE).format("DD/MM HH:mm")
-        : "-"
-    } | ${
-      r.receive_time
-        ? moment(r.receive_time).tz(TIMEZONE).format("DD/MM HH:mm")
-        : "-"
-    } | ${
-      r.done_time ? moment(r.done_time).tz(TIMEZONE).format("DD/MM HH:mm") : "-"
-    }\n`;
-  });
-
-  bot.sendMessage(chatId, s, { parse_mode: "Markdown" });
+  let s = "🗂️ *Laporan:*
 });
+  rows.forEach((r) => {
+    s += `#${r.id} - ${r.title}\n`;
+    s += `🕒 ${r.report_time ? moment(r.report_time).tz(TIMEZONE).format("YYYY-MM-DD HH:mm") : "-"}, `;
+    s += `📥 ${r.receive_time ? moment(r.receive_time).tz(TIMEZONE).format("YYYY-MM-DD HH:mm") : "-"}, `;
+    s += `✅ ${r.done_time ? moment(r.done_time).tz(TIMEZONE).format("YYYY-MM-DD HH:mm") : "-"}\n`;
+  });
+  bot.sendMessage(chatId, s, { parse_mode: "Markdown" });
 
 // range filter
 bot.onText(
@@ -427,15 +415,10 @@ bot.onText(
       );
     let s = `🗂️ Laporan dari ${match[1]} sampai ${match[2]}:\n`;
     for (const r of rows) {
-      s += `\n#${r.id} • ${r.title}\n   🕒 Laporan: ${
-        r.report_time
-          ? moment(r.report_time).tz(TIMEZONE).format("DD MMM YYYY HH:mm")
-          : "-"
-      }\n   ✅ Selesai: ${
-        r.done_time
-          ? moment(r.done_time).tz(TIMEZONE).format("DD MMM YYYY HH:mm")
-          : "-"
-      }\n`;
+      s += `#${r.id} - ${r.title}\n`;
+      s += `🕒 ${r.report_time ? moment(r.report_time).tz(TIMEZONE).format("YYYY-MM-DD HH:mm") : "-"}, `;
+      s += `📥 ${r.receive_time ? moment(r.receive_time).tz(TIMEZONE).format("YYYY-MM-DD HH:mm") : "-"}, `;
+      s += `✅ ${r.done_time ? moment(r.done_time).tz(TIMEZONE).format("YYYY-MM-DD HH:mm") : "-"}\n`;
     }
     bot.sendMessage(chatId, s);
   }
